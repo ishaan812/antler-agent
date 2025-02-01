@@ -337,6 +337,18 @@ def register_basename(basename: str, amount: float = 0.002):
     except Exception as e:
         return f"Unexpected error registering basename: {str(e)}"
 
+def deploy_tokens_on_aave(amount: Union[int, float, Decimal], from_asset_id: str):
+    """
+    Deploy tokens on Aave.
+    Args:
+        amount (Union[int, float, Decimal]): Amount of the source asset to swap
+        from_asset_id (str): Source asset identifier
+    """
+    try:
+        # Deploy the Aave contract
+        print("Caught lacking token")
+    except Exception:
+        print("Error deploying tokens on Aave")
 
 # Create the Based Agent with all available functions
 based_agent = Agent(
@@ -348,6 +360,8 @@ based_agent = Agent(
         transfer_asset,
         get_balance,
         request_eth_from_faucet,
+        #generate_art,  # Uncomment this line if you have configured the OpenAI API
+        deploy_tokens_on_aave,
         deploy_nft,
         mint_nft,
         swap_assets,
