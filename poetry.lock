@@ -424,27 +424,14 @@ doc = ["Sphinx (>=7)", "packaging", "sphinx-autodoc-typehints (>=1.2.0)", "sphin
 test = ["coverage (>=7)", "hypothesis", "pytest"]
 
 [[package]]
-name = "cdp"
-version = "0.0.2"
-description = "Change Directory Plus"
-optional = false
-python-versions = "*"
-files = [
-    {file = "cdp-0.0.2.tar.gz", hash = "sha256:92fa51d74d12695ab744d9c5ebe00057110df5dc47d6405440933fd7a2f19526"},
-]
-
-[package.dependencies]
-scandir = "*"
-
-[[package]]
 name = "cdp-sdk"
-version = "0.0.2"
+version = "0.0.7"
 description = "CDP Python SDK"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "cdp_sdk-0.0.2-py3-none-any.whl", hash = "sha256:dc2afa35d449e61298b963989231a58d3a25a78ed6b566db3642641116a6ef27"},
-    {file = "cdp_sdk-0.0.2.tar.gz", hash = "sha256:21b513b9b59ca9138f9d275c6ba15a0476f87901b0cdeed2361d5283c3a49bfa"},
+    {file = "cdp_sdk-0.0.7-py3-none-any.whl", hash = "sha256:238dcd662b7e29e4c919bfd5e3e488a0077ef2d9e4c374705e3571c094d77c79"},
+    {file = "cdp_sdk-0.0.7.tar.gz", hash = "sha256:e5752319a9744a3f99f26199926afbcbbdeafe415b401dbc1f92a0fe52b07a5f"},
 ]
 
 [package.dependencies]
@@ -2232,26 +2219,6 @@ rust-backend = ["rusty-rlp (>=0.2.1)"]
 test = ["hypothesis (==5.19.0)", "pytest (>=7.0.0)", "pytest-xdist (>=2.4.0)"]
 
 [[package]]
-name = "scandir"
-version = "1.10.0"
-description = "scandir, a better directory iterator and faster os.walk()"
-optional = false
-python-versions = "*"
-files = [
-    {file = "scandir-1.10.0-cp27-cp27m-win32.whl", hash = "sha256:92c85ac42f41ffdc35b6da57ed991575bdbe69db895507af88b9f499b701c188"},
-    {file = "scandir-1.10.0-cp27-cp27m-win_amd64.whl", hash = "sha256:cb925555f43060a1745d0a321cca94bcea927c50114b623d73179189a4e100ac"},
-    {file = "scandir-1.10.0-cp34-cp34m-win32.whl", hash = "sha256:2c712840c2e2ee8dfaf36034080108d30060d759c7b73a01a52251cc8989f11f"},
-    {file = "scandir-1.10.0-cp34-cp34m-win_amd64.whl", hash = "sha256:2586c94e907d99617887daed6c1d102b5ca28f1085f90446554abf1faf73123e"},
-    {file = "scandir-1.10.0-cp35-cp35m-win32.whl", hash = "sha256:2b8e3888b11abb2217a32af0766bc06b65cc4a928d8727828ee68af5a967fa6f"},
-    {file = "scandir-1.10.0-cp35-cp35m-win_amd64.whl", hash = "sha256:8c5922863e44ffc00c5c693190648daa6d15e7c1207ed02d6f46a8dcc2869d32"},
-    {file = "scandir-1.10.0-cp36-cp36m-win32.whl", hash = "sha256:2ae41f43797ca0c11591c0c35f2f5875fa99f8797cb1a1fd440497ec0ae4b022"},
-    {file = "scandir-1.10.0-cp36-cp36m-win_amd64.whl", hash = "sha256:7d2d7a06a252764061a020407b997dd036f7bd6a175a5ba2b345f0a357f0b3f4"},
-    {file = "scandir-1.10.0-cp37-cp37m-win32.whl", hash = "sha256:67f15b6f83e6507fdc6fca22fedf6ef8b334b399ca27c6b568cbfaa82a364173"},
-    {file = "scandir-1.10.0-cp37-cp37m-win_amd64.whl", hash = "sha256:b24086f2375c4a094a6b51e78b4cf7ca16c721dcee2eddd7aa6494b42d6d519d"},
-    {file = "scandir-1.10.0.tar.gz", hash = "sha256:4d4631f6062e658e9007ab3149a9b914f3548cb38bfb021c64f39a025ce578ae"},
-]
-
-[[package]]
 name = "six"
 version = "1.16.0"
 description = "Python 2 and 3 compatibility utilities"
@@ -2592,4 +2559,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10.0,<3.12"
-content-hash = "755a22d2df0ca60ebf4971f2fe0f2f4ce08d626154f48c9bcdf216540e657de2"
+content-hash = "3869ade546a4e01d0a072b1a7d5b89d08cc51cab4f0c3a6da25304b0dc1676f6"
