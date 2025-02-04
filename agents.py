@@ -1,5 +1,6 @@
 import os
 from decimal import Decimal
+import time
 from typing import Union
 
 from cdp import *
@@ -109,7 +110,7 @@ def transfer_asset(amount, asset_id, destination_address):
         transfer = agent_wallet.transfer(amount, asset_id, destination_address)
         transfer.wait()
         return f"Transferred {amount} {asset_id} to {destination_address}"
-    except Exception as e:
+    except ContractLogicError as e:
         return f"Error transferring asset: {str(e)}. If this is a custom token, it may have been recently deployed. Please try again in about 30 minutes, as it needs to be indexed by CDP first."
 
 
@@ -251,6 +252,7 @@ BASENAMES_REGISTRAR_CONTROLLER_ADDRESS_MAINNET = "0x4cCb0BB02FCABA27e82a56646E81
 BASENAMES_REGISTRAR_CONTROLLER_ADDRESS_TESTNET = "0x49aE3cC2e3AA768B1e5654f5D3C6002144A59581"
 L2_RESOLVER_ADDRESS_MAINNET = "0xC6d566A56A1aFf6508b41f6c90ff131615583BCD"
 L2_RESOLVER_ADDRESS_TESTNET = "0x6533C94869D28fAA8dF77cc63f9e2b2D6Cf77eBA"
+
 
 
 # Function to create registration arguments for Basenames
@@ -520,30 +522,64 @@ registrar_abi = [{
 # 4. If your function requires new imports or global variables, add them at the top of the file
 # 5. Test your new function thoroughly before deploying
 
-# Example of adding a new function:
-# def my_new_function(param1, param2):
-#     """
-#     Description of what this function does.
-#
-#     Args:
-#         param1 (type): Description of param1
-#         param2 (type): Description of param2
-#
-#     Returns:
-#         type: Description of what is returned
-#     """
-#     try:
-#         # Your function logic here
-#         result = do_something(param1, param2)
-#         return f"Operation successful: {result}"
-#     except Exception as e:
-#         return f"Error in my_new_function: {str(e)}"
 
-# Then add to based_agent.functions:
-# based_agent = Agent(
-#     ...
-#     functions=[
-#         ...
-#         my_new_function,
-#     ],
-# )
+
+AAVE_POOL_ABI = [
+  "function supplyWithPermit(address asset, uint256 amount, address onBehalfOf, uint16 referralCode, uint256 deadline, uint8 permitV, bytes32 permitR, bytes32 permitS) external"
+]
+
+AAVE_POOL_ADDRESS = "0xA238Dd80C259a72e81d7e4664a9801593F98d1c5"
+USDC_TOKEN_ID = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+
+
+def lend_USDC_on_AAVE(amount):
+    """
+    Lend USDC on Aave using the permit function.
+    Args:
+        amount (int): The amount of USDC to lend
+    Returns:
+        str: Status message about the lending transaction
+    """
+    try:
+        aave_pool = agent_wallet.get_contract(AAVE_POOL_ADDRESS, AAVE_POOL_ABI)
+        deadline = int(time.time()) + 3600
+
+        tokenName = "USDC"
+        nonce = agent_wallet.get_nonce()
+        chainId = agent_wallet.chain_id
+        domain = {
+            "name": tokenName,
+            "version": "1",
+            "chainId": chainId,
+            "verifyingContract": USDC_TOKEN_ID,
+        }
+
+        types = {
+            "Permit": [
+                {"name": "owner", "type": "address"},
+                {"name": "spender", "type": "address"},
+                {"name": "value", "type": "uint256"},
+                {"name": "nonce", "type": "uint256"},
+                {"name": "deadline", "type": "uint256"},
+            ],
+        }
+
+        message = {
+            "owner": agent_wallet.default_address.address_id,
+            "spender": AAVE_POOL_ADDRESS,
+            "value": amount,
+            "nonce": nonce,
+            "deadline": deadline,
+        }
+
+        signedPermit = agent_wallet.sign_typed_data(domain, types, message)
+        v, r, s = ethers.Signature.from(signedPermit)
+
+        permit_data = agent_wallet.get_permit_data(tokenName, amount, nonce, deadline, chainId)
+
+
+        tx = aave_pool.supplyWithPermit("0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913", amount * 100000, onBehalfOf, referralCode, deadline, permitV, permitR, permitS)
+        tx.wait()
+        return f"Lent {amount} USDC on Aave on behalf of {onBehalfOf}"
+    except Exception as e:
+        return f"Error lending USDC on Aave: {str(e)}"
